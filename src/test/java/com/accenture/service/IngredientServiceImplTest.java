@@ -2,17 +2,15 @@ package com.accenture.service;
 
 import com.accenture.exception.IngredientException;
 import com.accenture.repository.Ingredient;
-import com.accenture.repository.IngredientDao;
+import com.accenture.repository.dao.IngredientDao;
 import com.accenture.service.dto.IngredientRequestDto;
 import com.accenture.service.dto.IngredientResponseDto;
 import com.accenture.service.mapper.IngredientMapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
