@@ -85,7 +85,6 @@ public class IngredientControllerTest {
                  .andExpect(jsonPath("$.nom").value("Tomate"))
                  .andExpect(jsonPath("$.quantite").value(15));
 
-
      }
 
 
