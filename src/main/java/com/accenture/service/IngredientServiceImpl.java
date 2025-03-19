@@ -2,7 +2,7 @@ package com.accenture.service;
 
 import com.accenture.exception.IngredientException;
 import com.accenture.repository.Ingredient;
-import com.accenture.repository.IngredientDao;
+import com.accenture.repository.dao.IngredientDao;
 import com.accenture.service.dto.IngredientRequestDto;
 import com.accenture.service.dto.IngredientResponseDto;
 import com.accenture.service.mapper.IngredientMapper;
