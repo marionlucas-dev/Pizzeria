@@ -27,7 +27,7 @@ public class IngredientController {
 
 
     @PostMapping
-    ResponseEntity<IngredientResponseDto> ajouter(@RequestBody @Valid IngredientRequestDto ingredientRequestDto){
+    ResponseEntity<IngredientResponseDto> ajouter(@RequestBody IngredientRequestDto ingredientRequestDto){
         IngredientResponseDto ajouter = service.ajouter(ingredientRequestDto);
         URI ingredient = ServletUriComponentsBuilder
                 .fromCurrentRequest() .path("/{id}")

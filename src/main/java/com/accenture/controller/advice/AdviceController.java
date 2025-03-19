@@ -2,6 +2,7 @@ package com.accenture.controller.advice;
 
 import com.accenture.exception.ClientException;
 import com.accenture.exception.IngredientException;
+import com.accenture.exception.PizzaException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,18 +30,20 @@ public class AdviceController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
     }
 
+
     @ExceptionHandler(ClientException.class)
     public ResponseEntity<ErreurReponse> ajoutClient(ClientException ex) {
+    ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Erreur fonctionnelle", ex.getMessage());
+        log.error(er.message());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
+
+      
+    @ExceptionHandler(PizzaException.class)
+    public ResponseEntity<ErreurReponse> ajouterPizza(PizzaException ex) {
+
         ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Erreur fonctionnelle", ex.getMessage());
         log.error(er.message());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
     }
 
-//    @ExceptionHandler(EntityNotFoundException.class)
-//    public ResponseEntity<ErreurReponse> trouverMail(EntityNotFoundException ex) {
-//        ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Mauvaise Requête", ex.getMessage());
-//        log.error(er.message());
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
-//    }
-//
 }

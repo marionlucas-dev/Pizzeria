@@ -29,8 +29,7 @@ public class IngredientControllerTest {
 
     @Test
     void testPostIngredient() throws Exception {
-
-        IngredientResponseDto tomate = new IngredientResponseDto(1,"tomate", 1);
+        IngredientRequestDto tomate = new IngredientRequestDto( "tomate", 1);
         mockMvc.perform(MockMvcRequestBuilders.post("/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tomate)))
@@ -40,8 +39,18 @@ public class IngredientControllerTest {
                 .andExpect(jsonPath("$.nom").value("tomate"))
                 .andExpect(jsonPath("$.quantite").isNumber())
                 .andExpect(jsonPath("$.quantite").value(1));
-
     }
+
+    @Test
+    void testPostIngredientsPasCorrecte() throws Exception {
+        IngredientRequestDto tomate = new IngredientRequestDto( null, 1);
+        mockMvc.perform(MockMvcRequestBuilders.post("/ingredients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tomate)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Le nom de l'ingrédient ne doit pas être null ou blank"));
+    }
+
 
     @Test
     void testTrouverTous() throws Exception {
@@ -53,7 +62,7 @@ public class IngredientControllerTest {
     }
 
     @Test
-    void testTrouverParNomPasOk() throws Exception {
+    void testTrouverParIdPasOk() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/ingredients/77"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("ingrédient non présent"));
@@ -71,24 +80,18 @@ public class IngredientControllerTest {
                 .andExpect(jsonPath("$.quantite").value(15));
     }
 
-     @Test
-    void testModifier() throws Exception{
+    @Test
+    void testModifier() throws Exception {
         int id = 1;
         IngredientRequestDto requestDto = new IngredientRequestDto("Tomate", 15);
-
-         mockMvc.perform(MockMvcRequestBuilders.patch("/ingredients/{id}", id)
-                         .contentType(MediaType.APPLICATION_JSON)
-                         .content(objectMapper.writeValueAsString(requestDto)))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.id").value(id))
-                 .andExpect(jsonPath("$.nom").value("Tomate"))
-                 .andExpect(jsonPath("$.quantite").value(15));
-
-     }
-
-
-
-
+        mockMvc.perform(MockMvcRequestBuilders.patch("/ingredients/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nom").value("Tomate"))
+                .andExpect(jsonPath("$.quantite").value(15));
+    }
 
 
 }
