@@ -33,14 +33,16 @@ public class AdviceController {
 
     @ExceptionHandler(ClientException.class)
     public ResponseEntity<ErreurReponse> ajoutClient(ClientException ex) {
-    ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Erreur fonctionnelle", ex.getMessage());
+        ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Erreur fonctionnelle", ex.getMessage());
         log.error(er.message());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
 
-      
+    }
+
+
+
     @ExceptionHandler(PizzaException.class)
     public ResponseEntity<ErreurReponse> ajouterPizza(PizzaException ex) {
-
         ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Erreur fonctionnelle", ex.getMessage());
         log.error(er.message());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
