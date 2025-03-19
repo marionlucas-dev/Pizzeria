@@ -3,11 +3,6 @@ INSERT INTO INGREDIENTS (nom,quantite) VALUES
 ('Mozza',3),
 ('Jambon blanc',2);
 
-INSERT INTO CLIENT (id, nom,email) VALUES
-(1,'Gigi','gigi@gmail.com'),
-(2,'Lolo','lolo@gmail.com'),
-(3,'Marco','marco@gmail.com');
-
 INSERT INTO PIZZAS (nom) VALUES
 ('Regina'),
 ('Chèvre Miel');
@@ -22,3 +17,8 @@ INSERT INTO PIZZA_INGREDIENT (pizza_id, ingredient_id) VALUES
 (1, 2),
 (1, 3);
 
+
+INSERT INTO CLIENT (nom, email) VALUES
+('Gigi','gigi@gmail.com'),
+('Lolo','lolo@gmail.com'),
+('Marco','marco@gmail.com');
