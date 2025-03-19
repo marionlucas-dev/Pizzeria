@@ -34,19 +34,19 @@ public class ClientServiceImplTest {
 
 
     private static Client creerClient() {
-        return new Client(1, "gigi", "gigi@gmail.com");
+        return new Client("gigi", "gigi@gmail.com");
     }
 
     private static Client creerClient2() {
-        return new Client(2, "jojo", "jojo@gmail.com");
+        return new Client("jojo", "jojo@gmail.com");
     }
 
     private static ClientResponseDto creerClientResp() {
-        return new ClientResponseDto(1, "gigi", "gigi@gmail.com");
+        return new ClientResponseDto("gigi", "gigi@gmail.com");
     }
 
     private static ClientResponseDto creerClient2resp() {
-        return new ClientResponseDto(2, "jojo", "jojo@gmail.com");
+        return new ClientResponseDto("jojo", "jojo@gmail.com");
     }
 
     private static ClientRequestDto getClientRequest() {
@@ -103,8 +103,8 @@ public class ClientServiceImplTest {
         ClientRequestDto requestDto = new ClientRequestDto("gigi", "gigi@gmail.com");
         Client client = creerClient();
         Client clientApresEnreg = creerClient();
-        clientApresEnreg.setId(1);
-        ClientResponseDto responseDto = new ClientResponseDto(1, "gigi", "gigi@gmail.com");
+
+        ClientResponseDto responseDto = new ClientResponseDto( "gigi", "gigi@gmail.com");
 
         Mockito.when(mapperMock.toClient(requestDto)).thenReturn(client);
         Mockito.when(daoMock.save(client)).thenReturn(clientApresEnreg);

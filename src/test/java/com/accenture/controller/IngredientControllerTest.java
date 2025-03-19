@@ -27,7 +27,6 @@ public class IngredientControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Test
     void testPostIngredient() throws Exception {
 

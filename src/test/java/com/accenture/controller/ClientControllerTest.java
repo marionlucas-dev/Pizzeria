@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -18,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 
 public class ClientControllerTest {
 
@@ -31,13 +33,11 @@ public class ClientControllerTest {
     @Test
     void testPostClient() throws Exception {
 
-        ClientResponseDto client = new ClientResponseDto(1,"Gigi", "gigi@gmail.com");
+        ClientRequestDto client = new ClientRequestDto("Gigi", "gigi@gmail.com");
         mockMvc.perform(MockMvcRequestBuilders.post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(client)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.id").value(Matchers.not(0)))
                 .andExpect(jsonPath("$.nom").value("Gigi"))
                 .andExpect(jsonPath("$.email").isNotEmpty())
                 .andExpect(jsonPath("$.email").value("gigi@gmail.com"));
@@ -55,37 +55,45 @@ public class ClientControllerTest {
 
     @Test
     void testTrouverParMailPasOk() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clients/jiji@hotmail.fr"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/clients/id@gmail.com"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("email non trouvé"));
+                .andExpect(jsonPath("$.message").value("email non valide"));
 
     }
 
     @Test
-    void testTrouverParId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/ingredients/1"))
+    void testTrouverParEmail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/clients/gigi@gmail.com"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.nom").value("Tomate"))
-                .andExpect(jsonPath("$.quantite").isNumber())
-                .andExpect(jsonPath("$.quantite").value(15));
+                .andExpect(jsonPath("$.nom").value("Gigi"))
+                .andExpect(jsonPath("$.email").isNotEmpty())
+                .andExpect(jsonPath("$.email").value("gigi@gmail.com"));
     }
 
-//    @Test
-//    void testModifier() throws Exception{
-//        int id = 1;
-//        ClientRequestDto requestDto = new ClientRequestDto("Tomate", 15);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.patch("/ingredients/{id}", id)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(requestDto)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(id))
-//                .andExpect(jsonPath("$.nom").value("Tomate"))
-//                .andExpect(jsonPath("$.quantite").value(15));
-//
-//    }
+    @Test
+    void testModifier() throws Exception{
+        String mail = "gigi@gmail.com";
+        ClientRequestDto requestDto = new ClientRequestDto("toto", null);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/clients/{email}",mail)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nom").value("toto"))
+                .andExpect(jsonPath("$.email").value("gigi@gmail.com"));
+    }
+
+    @Test
+    void testSupprimerClient() throws Exception {
+        // Adresse e-mail du client à supprimer
+        String email = "gigi@gmail.com";
+        // Mock du service pour s'assurer que supprimerClient est appelé
+        ClientRequestDto requestDto = new ClientRequestDto("toto", null);
+        // Envoi de la requête DELETE et validation des résultats
+        mockMvc.perform(MockMvcRequestBuilders.delete("/clients/{email}", email))
+                .andExpect(status().isNoContent());
+
+    }
 
 
 
