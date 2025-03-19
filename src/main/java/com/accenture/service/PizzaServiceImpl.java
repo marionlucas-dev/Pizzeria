@@ -1,5 +1,4 @@
 package com.accenture.service;
-
 import com.accenture.exception.PizzaException;
 import com.accenture.repository.Ingredient;
 import com.accenture.repository.Pizza;
@@ -7,9 +6,10 @@ import com.accenture.repository.dao.IngredientDao;
 import com.accenture.repository.dao.PizzaDao;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.service.dto.PizzaResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PizzaServiceImpl implements PizzaService {
@@ -21,6 +21,20 @@ public class PizzaServiceImpl implements PizzaService {
         this.pizzaDao = pizzaDao;
         this.ingredientDao = ingredientDao;
     }
+
+    @Override
+    public Pizza trouver(int id) {
+        Optional<Pizza> optPizza = pizzaDao.findById(id);
+        if (optPizza.isEmpty())
+            throw new EntityNotFoundException("Pizza non trouvé");
+        return optPizza.get();
+    }
+
+    @Override
+    public List<Pizza> trouverTous() {
+        return pizzaDao.findAll();
+    }
+
 
     @Override
     public PizzaResponseDto ajouter(PizzaRequestDto pizzaRequestDto) {
@@ -55,4 +69,6 @@ public class PizzaServiceImpl implements PizzaService {
             throw new PizzaException("La pizza doit avoir des ingrédients");
         }
     }
+
+
 }
