@@ -39,6 +39,8 @@ public class AdviceController {
 
     }
 
+
+
     @ExceptionHandler(PizzaException.class)
     public ResponseEntity<ErreurReponse> ajouterPizza(PizzaException ex) {
         ErreurReponse er = new ErreurReponse(LocalDateTime.now(), "Erreur fonctionnelle", ex.getMessage());

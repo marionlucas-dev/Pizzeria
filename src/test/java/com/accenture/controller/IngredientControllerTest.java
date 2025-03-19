@@ -23,12 +23,9 @@ public class IngredientControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Test
     void testPostIngredient() throws Exception {
         IngredientRequestDto tomate = new IngredientRequestDto( "tomate", 1);
-
-//        IngredientResponseDto tomate = new IngredientResponseDto(1, "tomate", 1);
         mockMvc.perform(MockMvcRequestBuilders.post("/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tomate)))
@@ -83,7 +80,6 @@ public class IngredientControllerTest {
     void testModifier() throws Exception {
         int id = 1;
         IngredientRequestDto requestDto = new IngredientRequestDto("Tomate", 15);
-
         mockMvc.perform(MockMvcRequestBuilders.patch("/ingredients/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
