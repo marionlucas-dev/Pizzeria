@@ -18,3 +18,7 @@ INSERT INTO PIZZA_INGREDIENT (pizza_id, ingredient_id) VALUES
 (1, 3);
 
 
+INSERT INTO CLIENT (nom, email) VALUES
+('Gigi','gigi@gmail.com'),
+('Lolo','lolo@gmail.com'),
+('Marco','marco@gmail.com');
