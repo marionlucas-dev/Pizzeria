@@ -153,9 +153,9 @@ public class ClientServiceImplTest {
     void testTrouverClientExistePas() {
         // Simulation que le client n'existe pas en base
         when(daoMock.findById("gigi@gmail.com")).thenReturn(Optional.empty());
-
         // Vérifier que l'exception EntityNotFoundException est levée
-        assertThrows(EntityNotFoundException.class, () -> service.trouverClient("gigo@gmail.com"));
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> service.trouverClient("gigi@gmail.com"));
+        assertEquals("email non valide", ex.getMessage());
     }
 
     @Test
