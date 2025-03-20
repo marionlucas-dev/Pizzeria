@@ -155,7 +155,7 @@ public class ClientServiceImplTest {
         when(daoMock.findById("gigi@gmail.com")).thenReturn(Optional.empty());
 
         // Vérifier que l'exception EntityNotFoundException est levée
-        assertThrows(EntityNotFoundException.class, () -> service.trouverClient("gigo@gmail.com"));
+        assertThrows(EntityNotFoundException.class, () -> service.trouverClient("gigi@gmail.com"));
     }
 
     @Test
