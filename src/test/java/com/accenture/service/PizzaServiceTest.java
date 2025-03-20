@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PizzaServiceImplTest {
+class PizzaServiceImplTest {
 
     @InjectMocks
     private PizzaServiceImpl service;
@@ -177,8 +177,6 @@ public class PizzaServiceImplTest {
         Mockito.verify(pizzaDao).delete(pizza);
     }
 
-    }
-
 
 //**********************************************************************************************************************
 //                                                       METHODE Modifier
@@ -269,7 +267,6 @@ public class PizzaServiceImplTest {
         // Vérifier les ingrédients modifiés
         assertEquals(List.of("Tomate", "Olives"), response.ingredients());
     }
-
 
 
 
