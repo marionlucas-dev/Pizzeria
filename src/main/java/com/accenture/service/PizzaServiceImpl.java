@@ -26,17 +26,6 @@ public class PizzaServiceImpl implements PizzaService {
         this.ingredientDao = ingredientDao;
     }
 
-    private static void verifierPizza(PizzaRequestDto pizzaRequestDto) {
-        if (pizzaRequestDto == null)
-            throw new PizzaException("La pizza doit exister");
-        if (pizzaRequestDto.nom() == null || pizzaRequestDto.nom().isBlank())
-            throw new PizzaException("Le nom de la pizza ne doit pas être null ou blank");
-        if (pizzaRequestDto.prixParTaille().isEmpty())
-            throw new PizzaException("La taille et le prix de la pizza sont obligatoire");
-        if (pizzaRequestDto.ingrs() == null || pizzaRequestDto.ingrs().isEmpty()) {
-            throw new PizzaException("La pizza doit avoir des ingrédients");
-        }
-    }
 
     @Override
     public Pizza trouver(int id) {
@@ -76,11 +65,6 @@ public class PizzaServiceImpl implements PizzaService {
         pizzaDao.delete(pizza);
     }
 
-
-//***********************************************************************************************************************
-//                                                  METHODES PRIVEES
-//************************************************************************************************************************
-
     public PizzaResponseDto modifier(int id, PizzaRequestDto pizzaRequestDto) {
         // Récupérer la pizza existante
         Pizza pizza = trouver(id);
@@ -94,6 +78,11 @@ public class PizzaServiceImpl implements PizzaService {
         // Retourner un PizzaResponseDto avec les nouvelles valeurs
         return new PizzaResponseDto(pizzaEnreg.getId(), pizzaEnreg.getNom(), pizzaEnreg.getPrixParTaille(), ingredientsNoms);
     }
+
+//***********************************************************************************************************************
+//                                                  METHODES PRIVEES
+//************************************************************************************************************************
+
 
     private void VerifierModifier(PizzaRequestDto pizzaRequestDto, Pizza pizza) {
         // Vérifier et modifier les champs si une nouvelle valeur est fournie
@@ -114,6 +103,18 @@ public class PizzaServiceImpl implements PizzaService {
             // Récupérer les ingrédients à partir des IDs fournis
             List<Ingredient> ingredients = ingredientDao.findAllById(pizzaRequestDto.ingrs());
             pizza.setIngredients(ingredients);
+        }
+    }
+
+    private static void verifierPizza(PizzaRequestDto pizzaRequestDto) {
+        if (pizzaRequestDto == null)
+            throw new PizzaException("La pizza doit exister");
+        if (pizzaRequestDto.nom() == null || pizzaRequestDto.nom().isBlank())
+            throw new PizzaException("Le nom de la pizza ne doit pas être null ou blank");
+        if (pizzaRequestDto.prixParTaille().isEmpty())
+            throw new PizzaException("La taille et le prix de la pizza sont obligatoire");
+        if (pizzaRequestDto.ingrs() == null || pizzaRequestDto.ingrs().isEmpty()) {
+            throw new PizzaException("La pizza doit avoir des ingrédients");
         }
     }
 

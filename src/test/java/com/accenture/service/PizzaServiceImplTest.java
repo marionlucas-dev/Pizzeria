@@ -37,17 +37,7 @@ public class PizzaServiceImplTest {
     @Mock
     private IngredientDao ingredientDao;
 
-    private static PizzaRequestDto getRequestDto(HashMap<Taille, Double> prixParTaille) {
-        return new PizzaRequestDto("Regina", prixParTaille, List.of(1, 3, 5, 6));
-    }
 
-    private static Pizza getRegina(HashMap<Taille, Double> prixParTaille) {
-        return new Pizza("Regina", prixParTaille, List.of());
-    }
-
-    private static PizzaResponseDto getResponseDto(HashMap<Taille, Double> prixParTaille) {
-        return new PizzaResponseDto(1, "Regina", prixParTaille, List.of());
-    }
 
     @Test
     void testTrouverExistePas() {
@@ -203,11 +193,6 @@ public class PizzaServiceImplTest {
         assertEquals(List.of("Tomate", "Olives"), response.ingredients());
     }
 
-
-//************************************************************************************************************************
-//                                                      METHODES PRIVEES
-//************************************************************************************************************************
-
     @Test
     void testprixParPrixParTailleEmpty() {
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
@@ -254,5 +239,22 @@ public class PizzaServiceImplTest {
         Mockito.verify(pizzaDao).delete(pizza);
     }
 
+
+
+//************************************************************************************************************************
+//                                                      METHODES PRIVEES
+//************************************************************************************************************************
+
+    private static PizzaRequestDto getRequestDto(HashMap<Taille, Double> prixParTaille) {
+        return new PizzaRequestDto("Regina", prixParTaille, List.of(1, 3, 5, 6));
+    }
+
+    private static Pizza getRegina(HashMap<Taille, Double> prixParTaille) {
+        return new Pizza("Regina", prixParTaille, List.of());
+    }
+
+    private static PizzaResponseDto getResponseDto(HashMap<Taille, Double> prixParTaille) {
+        return new PizzaResponseDto(1, "Regina", prixParTaille, List.of());
+    }
 
 }
