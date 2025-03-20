@@ -30,18 +30,8 @@ public class IngredientServiceImpl implements IngredientService {
         Ingredient ingredient = ingredientMapper.toIngredient(ingredientRequestDto);
         Ingredient ingredientEnreg = ingredientDao.save(ingredient);
         return ingredientMapper.toIngredientResponseDto(ingredientEnreg);
-
-
     }
 
-    private static void verifierIngredient(IngredientRequestDto ingredientRequestDto) {
-        if (ingredientRequestDto == null)
-            throw new IngredientException("L'ingrédient doit exister");
-        if (ingredientRequestDto.nom() == null || ingredientRequestDto.nom().isBlank())
-            throw new IngredientException("Le nom de l'ingrédient ne doit pas être null ou blank");
-        if (ingredientRequestDto.quantite() < 0)
-            throw new IngredientException("L'ingrédient ne peut pas avoir une valeur négative");
-    }
 
     @Override
     public List<IngredientResponseDto> trouverTous() {
@@ -57,8 +47,6 @@ public class IngredientServiceImpl implements IngredientService {
             throw new EntityNotFoundException("ingrédient non présent");
         Ingredient ingredient = optIngredient.get();
         return ingredientMapper.toIngredientResponseDto(ingredient);
-
-
     }
 
     @Override
@@ -84,6 +72,16 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientMapper.toIngredientResponseDto(ingredient);
     }
 
+
+
+    private static void verifierIngredient(IngredientRequestDto ingredientRequestDto) {
+        if (ingredientRequestDto == null)
+            throw new IngredientException("L'ingrédient doit exister");
+        if (ingredientRequestDto.nom() == null || ingredientRequestDto.nom().isBlank())
+            throw new IngredientException("Le nom de l'ingrédient ne doit pas être null ou blank");
+        if (ingredientRequestDto.quantite() < 0)
+            throw new IngredientException("L'ingrédient ne peut pas avoir une valeur négative");
+    }
 
 
 
