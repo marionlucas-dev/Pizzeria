@@ -31,7 +31,7 @@ public class PizzaServiceImpl implements PizzaService {
     public Pizza trouver(int id) {
         Optional<Pizza> optPizza = pizzaDao.findById(id);
         if (optPizza.isEmpty())
-            throw new EntityNotFoundException("Pizza non trouvé");
+            throw new EntityNotFoundException("Pizza non trouvée");
         return optPizza.get();
     }
 
@@ -56,6 +56,14 @@ public class PizzaServiceImpl implements PizzaService {
         PizzaResponseDto dto = new PizzaResponseDto(pizzaEnreg.getId(), pizzaEnreg.getNom(), pizzaEnreg.getPrixParTaille(), ingres);
         return dto;
     }
+
+    @Override
+    public void supprimer(int id) {
+    Pizza pizza = trouver(id);
+
+    // Supprime la pizza de la base de données
+    pizzaDao.delete(pizza);
+}
 
 
     public PizzaResponseDto modifier(int id, PizzaRequestDto pizzaRequestDto) {

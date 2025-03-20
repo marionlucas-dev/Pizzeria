@@ -12,4 +12,6 @@ public interface PizzaService {
     List<Pizza> trouverTous();
 
     PizzaResponseDto ajouter(PizzaRequestDto pizzaRequestDto);
+
+    void supprimer(int id);
 }

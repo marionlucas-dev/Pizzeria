@@ -154,6 +154,7 @@ public class ClientServiceImplTest {
         // Simulation que le client n'existe pas en base
         when(daoMock.findById("gigi@gmail.com")).thenReturn(Optional.empty());
         // Vérifier que l'exception EntityNotFoundException est levée
+        assertThrows(EntityNotFoundException.class, () -> service.trouverClient("gigi@gmail.com"));
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> service.trouverClient("gigi@gmail.com"));
         assertEquals("email non valide", ex.getMessage());
     }
@@ -235,61 +236,5 @@ public class ClientServiceImplTest {
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> service.supprimerClient("tp@gmail.fr"));
         assertEquals("utilisateur non trouvé", ex.getMessage());
     }
-
-//    @DisplayName("Échec de la modification d'un client avec des informations nulles pour certains paramètres")
-//    @Test
-//    void modifierClientNull() {
-//        String login = "moicmama@gmail.com";
-//        String password = "Azerty@96";
-//        Client clientExistant = new Client();
-//        clientExistant.setLogin(login);
-//        clientExistant.setPassword(password);
-//        ClientRequestDTO clientRequestDTO = creerClient1RequestDTO();
-//        Client clientModifie = new Client();
-//        clientModifie.setLogin(login);
-//        clientModifie.setPassword(null);
-//        clientModifie.setNom(null);
-//        clientModifie.setPrenom(null);
-//        clientModifie.setLogin(null);
-//        clientModifie.setAdresse(null);
-//        clientModifie.setDateNaissance(null);
-//        clientModifie.setPermis(null);
-//        clientModifie.setDateInscription(null);
-//        ClientResponseDTO responseDTO = creerClient2ResponseDTO();
-//        Mockito.when(daoMock.findByLogin(login)).thenReturn(Optional.of(clientExistant));
-//        Mockito.when(mapperMock.toClient(clientRequestDTO)).thenReturn(clientModifie);
-//        Mockito.when(daoMock.save(clientExistant)).thenReturn(clientExistant);
-//        Mockito.when(mapperMock.toClientRequestDTO(clientExistant)).thenReturn(clientRequestDTO);
-//        Mockito.when(mapperMock.toClientResponseDTO(clientExistant)).thenReturn(responseDTO);
-//        ClientResponseDTO result = service.modifier(login, password, clientRequestDTO);
-//        assertThrows(EntityNotFoundException.class, () -> service.modifier("melodie.marigonez@hotmail.com", "Erreur dans l'email ou le mot de passe", clientRequestDTO));
-//        assertEquals("Marigonez", result.nom());
-//    }
-//
-//    @DisplayName("Modification réussie d'un client existant avec mise à jour de certains paramètres (login, adresse, date d'inscription)")
-//    @Test
-//    void modifierClientExistantQuelquesParametres() {
-//        String login = "moicmama@gmail.com";
-//        String password = "Azerty@96";
-//        Client clientExistant = new Client();
-//        clientExistant.setLogin(login);
-//        clientExistant.setPassword(password);
-//        ClientRequestDTO clientRequestDTO = creerClient1RequestDTO();
-//        Client clientModifie = new Client();
-//        clientModifie.setLogin(login);
-//        clientModifie.setPassword(password);
-//        clientModifie.setLogin("melodie.marigonez@hotmail.com");
-//        clientModifie.setAdresse(new Adresse(1, "75 rue du moulin Soline", "44115", "Basse Goulaine"));
-//        clientModifie.setDateInscription(LocalDate.now());
-//        ClientResponseDTO responseDTO = creerClient2ResponseDTO();
-//        Mockito.when(daoMock.findByLogin(login)).thenReturn(Optional.of(clientExistant));
-//        Mockito.when(mapperMock.toClient(clientRequestDTO)).thenReturn(clientModifie);
-//        Mockito.when(daoMock.save(clientExistant)).thenReturn(clientExistant);
-//        Mockito.when(mapperMock.toClientRequestDTO(clientExistant)).thenReturn(clientRequestDTO);
-//        Mockito.when(mapperMock.toClientResponseDTO(clientExistant)).thenReturn(responseDTO);
-//        ClientResponseDTO result = service.modifier(login, password, clientRequestDTO);
-//        assertNotNull(result);
-//        assertEquals("Marigonez", result.nom());
-//    }
 
 }
