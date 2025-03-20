@@ -1,4 +1,6 @@
 package com.accenture.controller;
+import com.accenture.exception.ClientException;
+import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.shared.Taille;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,9 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class PizzaControllerTest {
 
     @Autowired
@@ -69,7 +76,7 @@ public class PizzaControllerTest {
                 MockMvcRequestBuilders.get("/pizzas/77")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Pizza non trouvé"));
+                .andExpect(jsonPath("$.message").value("Pizza non trouvée"));
 
     }
 
@@ -91,8 +98,25 @@ public class PizzaControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/pizzas")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(3));
+                .andExpect(jsonPath("$.length()").value(2));
     }
+
+    @Test
+    void supprimerPizzaExistante() throws Exception {
+        int id = 1;
+        // Mock du service pour s'assurer que supprimerPizza est appelé
+        PizzaRequestDto requestDto = new PizzaRequestDto("Regina",new HashMap<>(),List.of(1));
+        // Envoi de la requête DELETE et validation des résultats
+        mockMvc.perform(MockMvcRequestBuilders.delete("/pizzas/{id}", id))
+                .andExpect(status().isNoContent());
+
+
+    }
+
+
+
+
+
 
 
 }

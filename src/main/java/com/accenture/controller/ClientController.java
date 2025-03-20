@@ -114,6 +114,7 @@ public class ClientController {
         ClientResponseDto supprimer= service.supprimerClient(email);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+
     }
 
 

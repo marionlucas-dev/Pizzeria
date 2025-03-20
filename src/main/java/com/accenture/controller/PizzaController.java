@@ -1,5 +1,6 @@
 package com.accenture.controller;
 
+import com.accenture.exception.ClientException;
 import com.accenture.repository.Pizza;
 import com.accenture.service.PizzaServiceImpl;
 import com.accenture.service.dto.IngredientRequestDto;
@@ -7,6 +8,7 @@ import com.accenture.service.dto.IngredientResponseDto;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.service.dto.PizzaResponseDto;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,11 +42,18 @@ private final PizzaServiceImpl service;
         return service.trouver(id);
     }
 
-@GetMapping
-    List<Pizza> pizzas (){
+
+    @GetMapping
+    List<Pizza> pizzas() {
         List<Pizza> pizzas = service.trouverTous();
         return pizzas;
-}
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<PizzaResponseDto> supprimerPizza(@PathVariable("id") int id) {
+            service.supprimer(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 
 
