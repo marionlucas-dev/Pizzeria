@@ -1,5 +1,7 @@
 package com.accenture.service;
+
 import com.accenture.exception.PizzaException;
+import com.accenture.repository.Client;
 import com.accenture.repository.Ingredient;
 import com.accenture.repository.Pizza;
 import com.accenture.repository.dao.IngredientDao;
@@ -8,12 +10,14 @@ import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.service.dto.PizzaResponseDto;
 import com.accenture.shared.Taille;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PizzaServiceImplTest {
+class PizzaServiceImplTest {
 
     @InjectMocks
     private PizzaServiceImpl service;
@@ -37,25 +41,25 @@ public class PizzaServiceImplTest {
 
 
     @Test
-    void testTrouverExistePas () {
+    void testTrouverExistePas() {
         when(pizzaDao.findById(1)).thenReturn(Optional.empty());
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> service.trouver(1));
-        assertEquals("Pizza non trouvé", ex.getMessage());
+        assertEquals("Pizza non trouvée", ex.getMessage());
     }
 
     @Test
-    void testTrouverParId(){
+    void testTrouverParId() {
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
         prixParTaille.put(Taille.GRANDE, 12.00);
         Pizza regina = getRegina(prixParTaille);
         regina.setId(1);
         when(pizzaDao.findById(1)).thenReturn(Optional.of(regina));
-        assertSame(regina,service.trouver(1));
+        assertSame(regina, service.trouver(1));
     }
 
 
     @Test
-    void testTrouverTous(){
+    void testTrouverTous() {
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
         prixParTaille.put(Taille.GRANDE, 12.00);
         Pizza regina = getRegina(prixParTaille);
@@ -69,7 +73,7 @@ public class PizzaServiceImplTest {
         assertEquals(pizzas, service.trouverTous());
     }
 
-//**********************************************************************************************************************
+    //**********************************************************************************************************************
 //                                                       METHODE AJOUTER
 //**********************************************************************************************************************
     @Test
@@ -160,10 +164,23 @@ public class PizzaServiceImplTest {
         // Vérifications
         assertEquals(responseDto, resultat); // Utilisation de assertEquals pour comparer les objets
         Mockito.verify(pizzaDao).save(any(Pizza.class));
+
+    }
+
+    @Test
+    void supprimerPizzaExistante() {
+        // Arrange
+        int pizzaId = 1;
+        Pizza pizza = new Pizza();
+        pizza.setId(pizzaId);
+
+        when(pizzaDao.findById(pizzaId)).thenReturn(Optional.of(pizza));
+        service.supprimer(pizzaId);
+        Mockito.verify(pizzaDao).delete(pizza);
     }
 
 
-//**********************************************************************************************************************
+    //**********************************************************************************************************************
 //                                                       METHODE Modifier
 //**********************************************************************************************************************
     @Test
@@ -177,29 +194,29 @@ public class PizzaServiceImplTest {
     }
 
     @Test
-    void testmodifierNomNull(){
+    void testmodifierNomNull() {
         PizzaRequestDto dto = new PizzaRequestDto(null, new HashMap<>(), List.of());
         assertThrows(EntityNotFoundException.class, () -> service.modifier(1, dto));
     }
 
 
     @Test
-    void testmodifierNomBlank(){
+    void testmodifierNomBlank() {
         PizzaRequestDto dto = new PizzaRequestDto("\n", new HashMap<>(), List.of());
         assertThrows(EntityNotFoundException.class, () -> service.modifier(1, dto));
     }
 
 
     @Test
-    void testmodifierPrixTailleNull(){
+    void testmodifierPrixTailleNull() {
         PizzaRequestDto dto = new PizzaRequestDto("Regina", null, List.of());
         assertThrows(EntityNotFoundException.class, () -> service.modifier(1, dto));
     }
 
 
     @Test
-    void testmodifierIngresEmpty(){
-        PizzaRequestDto dto = new PizzaRequestDto("Regina", new HashMap<>(),null);
+    void testmodifierIngresEmpty() {
+        PizzaRequestDto dto = new PizzaRequestDto("Regina", new HashMap<>(), null);
         assertThrows(EntityNotFoundException.class, () -> service.modifier(1, dto));
     }
 
@@ -213,8 +230,8 @@ public class PizzaServiceImplTest {
         prixInitial.put(Taille.MOYENNE, 5.00);
 
         List<Ingredient> ingredientsExistants = List.of(
-                new Ingredient( "Fromage", 1),
-                new Ingredient( "Jambon", 2)
+                new Ingredient("Fromage", 1),
+                new Ingredient("Jambon", 2)
         );
 
         Pizza pizzaExistante = new Pizza(1, "Pizza Originale", prixInitial, ingredientsExistants);
@@ -225,7 +242,7 @@ public class PizzaServiceImplTest {
         // Étape 2 : Simuler la récupération des nouveaux ingrédients
         List<Ingredient> nouveauxIngredients = List.of(
                 new Ingredient("Tomate", 1),
-                new Ingredient( "Olives",2)
+                new Ingredient("Olives", 2)
         );
         when(ingredientDao.findAllById(List.of(1, 2))).thenReturn(nouveauxIngredients);
 
@@ -254,10 +271,6 @@ public class PizzaServiceImplTest {
     }
 
 
-
-
-
-
 //************************************************************************************************************************
 //                                                      METHODES PRIVEES
 //************************************************************************************************************************
@@ -274,6 +287,7 @@ public class PizzaServiceImplTest {
     private static PizzaResponseDto getResponseDto(HashMap<Taille, Double> prixParTaille) {
         return new PizzaResponseDto(1, "Regina", prixParTaille, List.of());
     }
-
-
 }
+
+
+
