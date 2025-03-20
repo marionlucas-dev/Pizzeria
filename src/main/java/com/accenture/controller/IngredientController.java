@@ -26,6 +26,9 @@ public class IngredientController {
     }
 
 
+
+
+
     @PostMapping
     ResponseEntity<IngredientResponseDto> ajouter(@RequestBody IngredientRequestDto ingredientRequestDto){
         IngredientResponseDto ajouter = service.ajouter(ingredientRequestDto);

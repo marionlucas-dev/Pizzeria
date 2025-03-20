@@ -203,10 +203,19 @@ public class PizzaServiceImplTest {
         assertEquals(List.of("Tomate", "Olives"), response.ingredients());
     }
 
+    @Test
+    void supprimerPizzaExistante() {
+        // Arrange
+        int pizzaId = 1;
+        Pizza pizza = new Pizza();
+        pizza.setId(pizzaId);
 
-//************************************************************************************************************************
-//                                                      METHODES PRIVEES
-//************************************************************************************************************************
+        when(pizzaDao.findById(pizzaId)).thenReturn(Optional.of(pizza));
+        service.supprimer(pizzaId);
+        Mockito.verify(pizzaDao).delete(pizza);
+    }
+
+
 
     @Test
     void testprixParPrixParTailleEmpty() {
@@ -242,17 +251,6 @@ public class PizzaServiceImplTest {
 
     }
 
-    @Test
-    void supprimerPizzaExistante() {
-        // Arrange
-        int pizzaId = 1;
-        Pizza pizza = new Pizza();
-        pizza.setId(pizzaId);
-
-        when(pizzaDao.findById(pizzaId)).thenReturn(Optional.of(pizza));
-        service.supprimer(pizzaId);
-        Mockito.verify(pizzaDao).delete(pizza);
-    }
 
 
 }
