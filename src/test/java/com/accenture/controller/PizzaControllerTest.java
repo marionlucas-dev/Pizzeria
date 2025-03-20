@@ -1,4 +1,7 @@
 package com.accenture.controller;
+import com.accenture.repository.Ingredient;
+import com.accenture.repository.Pizza;
+import com.accenture.service.dto.IngredientRequestDto;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.shared.Taille;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +34,8 @@ public class PizzaControllerTest {
     void testPostPizza() throws Exception {
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
         prixParTaille.put(Taille.GRANDE, 12.00);
+        prixParTaille.put(Taille.MOYENNE, 12.00);
+        prixParTaille.put(Taille.PETITE, 12.00);
 
         List<Integer> listeIngr = new ArrayList<>();
         listeIngr.add(1);
@@ -92,6 +97,18 @@ public class PizzaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    void testModifier() throws Exception {
+        int id = 1;
+        PizzaRequestDto requestDto = new PizzaRequestDto("Reginas", new HashMap<>(), List.of(1));
+        mockMvc.perform(MockMvcRequestBuilders.patch("/pizzas/{id}" , id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nom").value("Reginas"));
     }
 
 

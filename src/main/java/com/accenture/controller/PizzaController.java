@@ -2,11 +2,12 @@ package com.accenture.controller;
 
 import com.accenture.repository.Pizza;
 import com.accenture.service.PizzaServiceImpl;
-import com.accenture.service.dto.IngredientRequestDto;
-import com.accenture.service.dto.IngredientResponseDto;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.service.dto.PizzaResponseDto;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,9 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pizzas")
+@Slf4j
 public class PizzaController {
 
-private final PizzaServiceImpl service;
+    private static final Logger log = LoggerFactory.getLogger(PizzaController.class);
+    private final PizzaServiceImpl service;
 
 
     public PizzaController(PizzaServiceImpl service) {
@@ -46,6 +49,11 @@ private final PizzaServiceImpl service;
         return pizzas;
 }
 
-
+@PatchMapping("/{id}")
+    ResponseEntity<PizzaResponseDto> modifier(@PathVariable("id") int id, @RequestBody PizzaRequestDto requestDto){
+        log.info("coucou");
+        PizzaResponseDto responseDto = service.modifier(id, requestDto);
+        return ResponseEntity.ok(responseDto);
+}
 
 }
