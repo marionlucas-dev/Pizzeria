@@ -1,5 +1,6 @@
 package com.accenture.service;
 import com.accenture.exception.PizzaException;
+import com.accenture.repository.Client;
 import com.accenture.repository.Ingredient;
 import com.accenture.repository.Pizza;
 import com.accenture.repository.dao.IngredientDao;
@@ -8,6 +9,7 @@ import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.service.dto.PizzaResponseDto;
 import com.accenture.shared.Taille;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,7 +42,7 @@ public class PizzaServiceImplTest {
     void testTrouverExistePas () {
         when(pizzaDao.findById(1)).thenReturn(Optional.empty());
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> service.trouver(1));
-        assertEquals("Pizza non trouvé", ex.getMessage());
+        assertEquals("Pizza non trouvée", ex.getMessage());
     }
 
     @Test
@@ -160,6 +162,21 @@ public class PizzaServiceImplTest {
         // Vérifications
         assertEquals(responseDto, resultat); // Utilisation de assertEquals pour comparer les objets
         Mockito.verify(pizzaDao).save(any(Pizza.class));
+
+    }
+
+    @Test
+    void supprimerPizzaExistante() {
+        // Arrange
+        int pizzaId = 1;
+        Pizza pizza = new Pizza();
+        pizza.setId(pizzaId);
+
+        when(pizzaDao.findById(pizzaId)).thenReturn(Optional.of(pizza));
+        service.supprimer(pizzaId);
+        Mockito.verify(pizzaDao).delete(pizza);
+    }
+
     }
 
 
@@ -252,6 +269,7 @@ public class PizzaServiceImplTest {
         // Vérifier les ingrédients modifiés
         assertEquals(List.of("Tomate", "Olives"), response.ingredients());
     }
+
 
 
 
