@@ -36,27 +36,37 @@ class PizzaServiceImplTest {
     @Mock
     private IngredientDao ingredientDao;
 
+    private static PizzaRequestDto getRequestDto(HashMap<Taille, Double> prixParTaille) {
+        return new PizzaRequestDto("Regina", prixParTaille, List.of(1, 3, 5, 6));
+    }
+
+    private static Pizza getRegina(HashMap<Taille, Double> prixParTaille) {
+        return new Pizza("Regina", prixParTaille, List.of());
+    }
+
+    private static PizzaResponseDto getResponseDto(HashMap<Taille, Double> prixParTaille) {
+        return new PizzaResponseDto(1, "Regina", prixParTaille, List.of());
+    }
 
     @Test
-    void testTrouverExistePas () {
+    void testTrouverExistePas() {
         Mockito.when(pizzaDao.findById(1)).thenReturn(Optional.empty());
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () -> service.trouver(1));
         assertEquals("Pizza non trouvée", ex.getMessage());
     }
 
     @Test
-    void testTrouverParId(){
+    void testTrouverParId() {
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
         prixParTaille.put(Taille.GRANDE, 12.00);
         Pizza regina = getRegina(prixParTaille);
         regina.setId(1);
         Mockito.when(pizzaDao.findById(1)).thenReturn(Optional.of(regina));
-        assertSame(regina,service.trouver(1));
+        assertSame(regina, service.trouver(1));
     }
 
-
     @Test
-    void testTrouverTous(){
+    void testTrouverTous() {
 
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
         prixParTaille.put(Taille.GRANDE, 12.00);
@@ -74,14 +84,7 @@ class PizzaServiceImplTest {
         assertEquals(pizzas, service.trouverTous());
 
 
-
-
     }
-
-
-
-
-
 
     //**********************************************************************************************************************
 //                                                       METHODE AJOUTER
@@ -212,19 +215,10 @@ class PizzaServiceImplTest {
         assertEquals(List.of("Tomate", "Olives"), response.ingredients());
     }
 
-    @Test
-    void supprimerPizzaExistante() {
-        // Arrange
-        int pizzaId = 1;
-        Pizza pizza = new Pizza();
-        pizza.setId(pizzaId);
 
-        when(pizzaDao.findById(pizzaId)).thenReturn(Optional.of(pizza));
-        service.supprimer(pizzaId);
-        Mockito.verify(pizzaDao).delete(pizza);
-    }
-
-
+//************************************************************************************************************************
+//                                                      METHODES PRIVEES
+//************************************************************************************************************************
 
     @Test
     void testprixParPrixParTailleEmpty() {
@@ -272,30 +266,6 @@ class PizzaServiceImplTest {
         when(pizzaDao.findById(pizzaId)).thenReturn(Optional.of(pizza));
         service.supprimer(pizzaId);
         Mockito.verify(pizzaDao).delete(pizza);
-    }
-
-
-
-
-
-
-
-
-//************************************************************************************************************************
-//                                                      METHODES PRIVEES
-//************************************************************************************************************************
-
-    private static PizzaRequestDto getRequestDto(HashMap<Taille, Double> prixParTaille) {
-        return new PizzaRequestDto("Regina", prixParTaille, List.of(1, 3, 5, 6));
-    }
-
-
-    private static Pizza getRegina(HashMap<Taille, Double> prixParTaille) {
-        return new Pizza("Regina", prixParTaille, List.of());
-    }
-
-    private static PizzaResponseDto getResponseDto(HashMap<Taille, Double> prixParTaille) {
-        return new PizzaResponseDto(1, "Regina", prixParTaille, List.of());
     }
 
 
