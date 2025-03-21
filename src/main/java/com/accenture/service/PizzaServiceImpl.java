@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PizzaServiceImpl implements PizzaService {
@@ -74,8 +75,6 @@ public class PizzaServiceImpl implements PizzaService {
                 .toList();
 
         PizzaResponseDto dto = new PizzaResponseDto(pizzaEnreg.getId(), pizzaEnreg.getNom(), pizzaEnreg.getPrixParTaille(), ingres);
-
-
         return dto;
     }
 
@@ -128,6 +127,8 @@ public class PizzaServiceImpl implements PizzaService {
             throw new PizzaException("Le nom de la pizza ne doit pas être null ou blank");
         if (pizzaRequestDto.prixParTaille().isEmpty())
             throw new PizzaException("La taille et le prix de la pizza sont obligatoire");
+        if (pizzaRequestDto.prixParTaille().size() != 3)
+            throw new PizzaException("Il faut forcément remplir 3 tailles de pizzas");
         if (pizzaRequestDto.ingrs() == null || pizzaRequestDto.ingrs().isEmpty()) {
             throw new PizzaException("La pizza doit avoir des ingrédients");
         }

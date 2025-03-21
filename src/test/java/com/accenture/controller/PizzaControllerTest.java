@@ -1,5 +1,7 @@
 package com.accenture.controller;
-
+import com.accenture.repository.Ingredient;
+import com.accenture.repository.Pizza;
+import com.accenture.service.dto.IngredientRequestDto;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.shared.Taille;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +37,8 @@ public class PizzaControllerTest {
     void testPostPizza() throws Exception {
         HashMap<Taille, Double> prixParTaille = new HashMap<>();
         prixParTaille.put(Taille.GRANDE, 12.00);
+        prixParTaille.put(Taille.MOYENNE, 12.00);
+        prixParTaille.put(Taille.PETITE, 12.00);
 
         List<Integer> listeIngr = new ArrayList<>();
         listeIngr.add(1);
@@ -68,21 +72,21 @@ public class PizzaControllerTest {
     }
 
     @Test
-    void testIdPasCorrecte() throws Exception {
+    void testIdPasCorrecte() throws Exception{
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/pizzas/77")
-                                .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.get("/pizzas/77")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Pizza non trouvée"));
 
     }
 
     @Test
-    void testIdCorrecte() throws Exception {
+    void testIdCorrecte()throws Exception{
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/pizzas/1")
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
+                MockMvcRequestBuilders.get("/pizzas/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.id").value(1))
@@ -91,9 +95,9 @@ public class PizzaControllerTest {
 
 
     @Test
-    void testTrouverTous() throws Exception {
+    void testTrouverTous() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get("/pizzas")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }
@@ -102,11 +106,10 @@ public class PizzaControllerTest {
     void supprimerPizzaExistante() throws Exception {
         int id = 1;
         // Mock du service pour s'assurer que supprimerPizza est appelé
-        PizzaRequestDto requestDto = new PizzaRequestDto("Regina", new HashMap<>(), List.of(1));
+        PizzaRequestDto requestDto = new PizzaRequestDto("Regina",new HashMap<>(),List.of(1));
         // Envoi de la requête DELETE et validation des résultats
         mockMvc.perform(MockMvcRequestBuilders.delete("/pizzas/{id}", id))
                 .andExpect(status().isNoContent());
-
 
     }
 

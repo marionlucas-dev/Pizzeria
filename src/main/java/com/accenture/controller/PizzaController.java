@@ -1,11 +1,17 @@
 package com.accenture.controller;
 
+import com.accenture.exception.ClientException;
 import com.accenture.repository.Pizza;
 import com.accenture.service.PizzaServiceImpl;
+import com.accenture.service.dto.IngredientRequestDto;
+import com.accenture.service.dto.IngredientResponseDto;
 import com.accenture.service.dto.PizzaRequestDto;
 import com.accenture.service.dto.PizzaResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,8 +21,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pizzas")
+@Slf4j
 public class PizzaController {
 
+    private static final Logger log = LoggerFactory.getLogger(PizzaController.class);
     private final PizzaServiceImpl service;
 
 
@@ -76,8 +84,8 @@ public class PizzaController {
      */
     @DeleteMapping("/{id}")
     ResponseEntity<PizzaResponseDto> supprimerPizza(@PathVariable("id") int id) {
-        service.supprimer(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            service.supprimer(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
