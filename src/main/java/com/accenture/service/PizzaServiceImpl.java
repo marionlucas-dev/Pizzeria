@@ -30,6 +30,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     /**
      * Récupère une entité Pizza à partir de son identifiant.
+     *
      * @param id l'identifiant de la Pizza à récupérer
      * @return l'entité Pizza correspondant à l'identifiant spécifié
      * @throws EntityNotFoundException si aucune Pizza n'est trouvée avec l'identifiant spécifié
@@ -44,9 +45,9 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
 
-
     /**
      * Récupère la liste de toutes les entités Pizza.
+     *
      * @return une liste contenant toutes les entités Pizza
      */
 
@@ -56,9 +57,9 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
 
-
     /**
      * Ajoute une nouvelle Pizza en fonction des données fournies dans un PizzaRequestDto.
+     *
      * @param pizzaRequestDto les données de la Pizza à ajouter
      * @return un PizzaResponseDto contenant les informations de la Pizza ajoutée
      */
@@ -83,6 +84,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     /**
      * Supprime une Pizza à partir de son identifiant.
+     *
      * @param id l'identifiant de la Pizza à supprimer
      */
 
@@ -100,11 +102,10 @@ public class PizzaServiceImpl implements PizzaService {
 //************************************************************************************************************************
 
 
-
     /**
      * Modifie une Pizza existante avec les données fournies dans un PizzaRequestDto.
      *
-     * @param id l'identifiant de la Pizza à modifier
+     * @param id              l'identifiant de la Pizza à modifier
      * @param pizzaRequestDto les nouvelles données pour modifier la Pizza
      * @return un PizzaResponseDto contenant les informations mises à jour de la Pizza
      */
@@ -159,6 +160,8 @@ public class PizzaServiceImpl implements PizzaService {
             throw new PizzaException("La taille et le prix de la pizza sont obligatoire");
         if (pizzaRequestDto.ingrs() == null || pizzaRequestDto.ingrs().isEmpty()) {
             throw new PizzaException("La pizza doit avoir des ingrédients");
+
+
         }
     }
 

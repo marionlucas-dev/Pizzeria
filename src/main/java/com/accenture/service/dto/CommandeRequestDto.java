@@ -3,7 +3,7 @@ package com.accenture.service.dto;
 import java.util.List;
 
 public record CommandeRequestDto(
-        int clientId,
+        String clientEmail,
         List<PizzaTailleRequestDto> pizzas
 
 

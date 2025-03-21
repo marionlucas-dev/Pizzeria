@@ -5,8 +5,8 @@ import com.accenture.repository.Client;
 import java.util.List;
 
 public record CommandeResponseDto(
-        Client client,
-        List<PizzaTailleRequestDto> pizzas,
+        String client,
+        List<PizzaTailleResponseDto> pizzas,
         double prixTotal
 
 
