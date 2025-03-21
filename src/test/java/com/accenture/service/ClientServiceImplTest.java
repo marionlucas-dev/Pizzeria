@@ -2,7 +2,7 @@ package com.accenture.service;
 
 import com.accenture.exception.ClientException;
 import com.accenture.repository.Client;
-import com.accenture.repository.ClientDao;
+import com.accenture.repository.dao.ClientDao;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.mapper.ClientMapper;
