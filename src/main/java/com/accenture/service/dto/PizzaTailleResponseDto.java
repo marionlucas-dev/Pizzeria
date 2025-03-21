@@ -1,4 +1,13 @@
 package com.accenture.service.dto;
 
-public record PizzaTailleResponseDto() {
+import com.accenture.shared.Taille;
+
+public record PizzaTailleResponseDto(
+
+        String nom,
+        Taille taille
+
+
+
+) {
 }
